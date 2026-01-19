@@ -1,82 +1,61 @@
-# Lightweight React Template for KAVIA
+# Notes Frontend (React)
 
-This project provides a minimal React template with a clean, modern UI and minimal dependencies.
+A simple notes UI that can list, create, edit, and delete notes via a backend REST API.
 
 ## Features
 
-- **Lightweight**: No heavy UI frameworks - uses only vanilla CSS and React
-- **Modern UI**: Clean, responsive design with KAVIA brand styling
-- **Fast**: Minimal dependencies for quick loading times
-- **Simple**: Easy to understand and modify
+- Notes list (with optional search filter by title)
+- Create new note
+- Edit existing note
+- Delete note (with confirmation)
+- Loading/error states + retry
+- Empty state UI
+- Basic validation (title required)
+- Uses a small `fetch`-based API client module
 
-## Getting Started
+## API requirements
 
-In the project directory, you can run:
+This frontend expects the backend to provide these routes:
 
-### `npm start`
+- `GET /notes` → returns an array of notes (or `{ items: [] }`)
+- `POST /notes` → creates a note from `{ title, content }`
+- `PUT /notes/:id` → updates a note with `{ title, content }`
+- `DELETE /notes/:id` → deletes a note
 
-Runs the app in development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+A note is expected to look like:
 
-### `npm test`
-
-Launches the test runner in interactive watch mode.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-## Customization
-
-### Colors
-
-The main brand colors are defined as CSS variables in `src/App.css`:
-
-```css
-:root {
-  --kavia-orange: #E87A41;
-  --kavia-dark: #1A1A1A;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
-}
+```json
+{ "id": "string-or-number", "title": "string", "content": "string" }
 ```
 
-### Components
+## Environment variables
 
-This template uses pure HTML/CSS components instead of a UI framework. You can find component styles in `src/App.css`. 
+Set one of the following (preferred first):
 
-Common components include:
-- Buttons (`.btn`, `.btn-large`)
-- Container (`.container`)
-- Navigation (`.navbar`)
-- Typography (`.title`, `.subtitle`, `.description`)
+- `REACT_APP_API_BASE` (preferred)
+- `REACT_APP_BACKEND_URL`
 
-## Learn More
+Example:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+REACT_APP_API_BASE=http://localhost:8000
+```
 
-### Code Splitting
+Important: Create React App reads env vars at build/start time, so **restart `npm start`** after changing env vars.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Run locally
 
-### Analyzing the Bundle Size
+From `notes_frontend/`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm install
+npm start
+```
 
-### Making a Progressive Web App
+Open http://localhost:3000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Troubleshooting
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- If you see “Backend URL missing”, set `REACT_APP_API_BASE` or `REACT_APP_BACKEND_URL` and restart the dev server.
+- If loading fails, use the Retry button (network errors and timeouts are handled with friendly messages).
+"
